@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Docteur liste{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock  %}
+{% block body %}
+<div class="container">
+    <h2>Liste de docteurs</h2>
+
+    <table class="table table-hover table-bordered mb-4">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Adresse</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>DateDeNaissance</th>
+                <th>Modifier</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for doctor in doctors %}
+            <tr>
+                <td>{{ doctor.Nom }}</td>
+                <td>{{ doctor.Prenom }}</td>
+                <td>{{ doctor.Adresse }}</td>
+                <td>{{ doctor.Phone }}</td>
+                <td>{{ doctor.Email }}</td>
+                <td>{{ doctor.DateDeNaissance ? doctor.DateDeNaissance|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('admin_doctor_edit', {'id': doctor.id}) }}">Modifier</a>
+                </td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">pas d'enregistrement trouvés</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="inline">
+        <a class="alert alert-primary" href="{{ path('admin_doctor_new') }}">Creer un nouveau docteur</a>
+    </div>
+</div>
+{% endblock %}

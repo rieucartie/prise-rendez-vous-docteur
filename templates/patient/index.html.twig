@@ -1,0 +1,167 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TestController!{% endblock %}
+{% block body %}
+    <div class="imgdoctor") ">
+        <section id="promo-1" class="content-block promo-1 min-height-600px bg-offwhite">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5" id="parent">
+                        <h2>Prenez rendez-vous aujourdhui!</h2>
+                        <p>C'est le planning du jour par docteur <span class="label label-danger">Veuillez vous connecter</span> pour prendre rendez-vous.</p>
+                        <div id="child">
+                            <form id="filters" onmouseout ="fetchDate()" {# action="{{ path('tests')}}"#}>
+                                <div class="input-group" style="margin-bottom:10px;">
+                                    <input   class="form-control"  name="madate"  id='thedate'
+                                             value="{#{% for rempli in sDate  %}   {{ rempli.ScheduleDate |date('d-m-Y') }} {%endfor %}"#}"
+                                            {# onchange="document.forms[0].submit()"#}
+                                    />
+                                </div>
+                            </form>
+                        </div>
+
+
+                        <div class="col-xs1 col-sm4" id="content">
+
+                            {%  if datenull is not empty %}
+                                <table class='table table-hover'>
+                                    <tr>
+                                        <th>Date </th>
+                                        <th>Jour</th>
+                                        <th>Début</th>
+                                        <th>Fin</th>
+                                        <th>disponibilité</th>
+                                    </tr>
+                                    {% for schedule in datenull %}
+                                        <tr>
+                                            <td>{{ schedule.ScheduleDate |date('d-m-Y') }}</td>
+                                            <td> {{ schedule.ScheduleDay  }}</td>
+                                            <td>{{ schedule.StartTime |date('H:i')~ ' H' }}</td>
+                                            <td>  {{ schedule.EndTime   |date('H:i')~ ' H' }}</td>
+                                            <td>
+                                                <a class="btn btn-primary"
+                                                   href="{{ path('booking', {'id': schedule.id}) }}">
+                                                    {%  if schedule.BookAvail == "disponible" %} Reserver   {%  endif  %}
+                                                    {# {{ schedule.BookAvail }}#}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {%  else %}
+                                {% include "patient/content.html.twig" %}
+                            {%  endif  %}
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- forth sections start -->
+        <section id="content-1-9" class="content-1-9 content-block">
+            <div class="container">
+                <div class="underlined-title">
+                    <h1>Entrer en contact</h1>
+                    <hr>
+                    <h2>N'hésitez pas à nous écrire pour nous contacter
+                    </h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 col-xs-12 pad25">
+                        <div class="col-xs-2">
+                            <span class="fa fa-pencil"></span>
+                        </div>
+                        <div class="col-xs-10">
+                            <h4>Par telephone</h4>
+                            <p>077888778787</p>
+                            <p>Fax : 077888778787</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12 pad25">
+                        <div class="col-xs-2">
+                            <span class="fa fa-code"></span>
+                        </div>
+                        <div class="col-xs-10">
+                            <h4>Par internet</h4>
+                            <p>Sur notre site</p>
+                            <p>https://www.doctor-genial.fr</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12 pad25">
+                        <div class="col-xs-2">
+                            <span class="fa fa-comments-o"></span>
+                        </div>
+                        <div class="col-xs-10">
+                            <h4>En vous déplacant</h4>
+                            <p>Rue simone de beauvoir 10850 lopertui</p>
+                            <p>de 8 h à 12 h et 13 h à 19h </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container -->
+        </section>
+        <!-- forth section end -->
+
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script >
+        const FiltersForm = document.querySelector("#filters");
+        // On boucle sur les input
+         function fetchDate() {
+            document.querySelectorAll("#filters input").forEach(input => {
+                input.addEventListener("mouseout", async () => {
+                    // Ici on intercepte les clics
+                    // On récupère les données du formulaire
+                    const Form = new FormData(FiltersForm);
+
+                    // On fabrique la "queryString"
+                    const Params = new URLSearchParams();
+
+                    Form.forEach((value, key) => {
+                        Params.append(key, value);
+                    });
+                    // On récupère l'url active
+                    const Url = new URL(window.location.href);
+
+                    // On lance la requête
+                     fetch(Url.pathname + "?" + Params.toString() + "&ajax=1", {
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    }).then(response =>
+                        response.json()
+                    ).then(data => {
+                        if(data != null){
+                            // On va chercher la zone de contenu
+                            const content = document.querySelector("#content");
+                            // On remplace le contenu
+                            content.innerHTML = data.content;
+
+                            // On met à jour l'url
+                            history.pushState({}, null, Url.pathname + "?" + Params.toString());
+                        }
+
+                    }).catch(e => alert(e));
+
+                })
+                ;
+            }, { once: true });
+        }
+
+    </script>
+    <script >
+        $(function() {
+            $('#thedate').datepicker({
+                format: 'yyyy-mm-dd',
+                todayHighlight: true,
+                startDate: '-10d',
+            });
+        })
+    </script>
+{% endblock %}

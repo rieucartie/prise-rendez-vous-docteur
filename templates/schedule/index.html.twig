@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello ScheduleController!{% endblock %}
+{% block body %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+    {#    {{ dump(app.request.all()) }}#}
+
+    <!-- panel start -->
+    <div class="panel panel-primary filterable">
+        <!-- panel heading start -->
+        <div class="panel-heading">
+            <h3 class="panel-title">Liste des rendez-vous</h3>
+
+        </div>
+        <!-- panel heading end -->
+        <div class="panel-body">
+            <!-- panel content start -->
+            <!-- Table -->
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr class="filters">
+                    <th><input type="text" class="form-control" placeholder="Date" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Jour" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Début" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Fin" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="places disponible" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Nom" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Prenom" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Email" disabled></th>
+                    <th><input type="text" width="200px" class="form-control" placeholder="" disabled>La consultation a eu lieu ?</th>
+                    <th><input type="text" class="form-control" placeholder="Supprimer" disabled></th>
+
+                </tr>
+                </thead>
+                </tbody>
+                {% for schedule in appointment %}
+
+                    <tr>
+                       <td>{{ schedule.schedule.ScheduleDate |date('d-m-Y') }}</td>
+                        <td> {{ schedule.schedule.ScheduleDay  }}</td>
+                        <td>{{ schedule.schedule.StartTime |date('H:i:s') }}</td>
+                        <td>  {{ schedule.schedule.EndTime |date('H:i:s') }}</td>
+                        <td> {{ schedule.schedule.BookAvail }}</td>
+                        <td> {{ schedule.users.patientNom }}</td>
+                        <td> {{ schedule.users.patientPrenom }}</td>
+                        <td> {{ schedule.users.Email }}</td>
+                        <td>
+                       <fieldset class="custom-control custom-switch">
+                           <label id="recuplabelcheckbox"  class="form-switch mt-2">
+                               <input type="checkbox" {{ ( schedule.Status) ? 'checked=checked' : ''}}
+                                     data-id="{{schedule.id}}"
+                               >
+                               <span id="slider"   data-id="{{schedule.id}}"   class="slider"></span>
+                           </label>
+                        </fieldset>
+                        </td>
+                        <td>  <a class="btn btn-danger" href="{{ path('delete_rdv', {'scheduleid': schedule.id}) }}">Supprimer</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <!-- panel content end -->
+            <!-- panel end -->
+        </div>
+    </div>
+    <!-- panel start -->
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    let lesslider = document.querySelectorAll("#slider")
+    let labelcheckbox = document.querySelectorAll("#recuplabelcheckbox")
+    var slider = document.getElementById('slider');
+    let activer = document.querySelectorAll("[type=checkbox]")
+
+    activer.forEach(macheckbox=> {
+        macheckbox.addEventListener("click", function(caseacocher)  {
+            let xmlhttp = new XMLHttpRequest;
+            let checkboxcurrent = caseacocher.currentTarget.dataset.id;//GET http://localhost:8000/status/24/false
+            lesslider.forEach(function (slide) {
+              let leslide = slide.getAttribute("data-id");
+                if(leslide === checkboxcurrent){
+                    // slide.textContent=caseacocher.currentTarget.checked
+                    if (caseacocher.currentTarget.checked === true){
+                        slide.textContent=  "OUI"
+                    }
+                    else{
+                        slide.textContent=  "NON"
+                    }
+
+                }
+            })
+            xmlhttp.open("get", `/status/${this.dataset.id}/${macheckbox.checked}`)
+            xmlhttp.send()
+        })
+    })
+
+    /* la version js fetch à la place de ajax */
+/*    activer.forEach(macheckbox => {
+        macheckbox.addEventListener("click", function (caseacocher) {
+            //console.log(macheckbox.checked)
+            const fetch_options = {
+                body: JSON.stringify({id: this.dataset.id, ischecked: macheckbox.checked}),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                method: 'POST'
+            };
+            fetch('/status', fetch_options)
+                .then((resp) => resp.json())
+                .then(function (data) {
+                    //console.log(data)  //ici le $status
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })//fin fetch
+        });
+    })*/
+</script>
+{% endblock %}

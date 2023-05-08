@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} liste des patients !{% endblock %}
+
+{% block body %}
+
+
+    <div class="container">
+        <h2 align="center"  >Liste des rendez-vous du patient</h2>
+        {%  if mesrendezvous is empty %}
+
+        Pas de rendez_vous à l'heure actuelle
+
+        {%  else %}
+        <table class="table table-bordered table-striped "  >
+            <thead>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Symptome</th>
+            <th>Commentaires</th>
+            <th>Date du rdv</th>
+            <th>Heure du rdv</th>
+          {#  <th>Modifier</th>#}
+            <th>Supprimer</th>
+            </thead>
+            <tbody>
+            {# On boucle sur les utilisateurs #}
+            {% for user in mesrendezvous %}
+                <tr>
+                {% for appointment in user.appointments %}
+                    <td>{{ user.patientNom }}</td>
+                    <td>{{ user.patientPrenom }}</td>
+                    <td>
+                        {%  if appointment.Symptome is not empty %}  {{ appointment.Symptome }}   {% else %}  EN ATTENTE  {% endif %}
+                    </td>
+                     <td>
+                         {%  if appointment.Comments is not empty %}  {{ appointment.Comments }}   {% else %}  EN ATTENTE  {% endif %}
+                    </td>
+                    <td>
+                        {{ appointment.schedule.ScheduleDate |date('d-m-Y') }}
+                    </td>
+                    <td>
+                        {{  appointment.schedule.StartTime  |date('H:i') }}
+                    </td>
+                    <td>
+                        <a class="btn btn-danger"
+                           href="{{ path('deleteappointement', {'id': appointment.id}) }}">
+                            Supprimer
+                        </a>
+                    </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+        {%  endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nouveau planning{% endblock %}
+{% block body %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+
+        <!-- panel start -->
+        <div class="panel panel-primary">
+
+            <!-- panel heading starat -->
+            <div class="panel-heading">
+                <h3 class="panel-title">Ajouter une place disponible au planning</h3>
+            </div>
+            <!-- panel heading end -->
+
+            <div class="panel-body">
+                <!-- panel content start -->
+                <div class="bootstrap-iso">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                {{ form_start(form) }}
+                                {{ form_errors(form) }}
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- panel content end -->
+                <!-- panel end -->
+            </div>
+        </div>
+        <!-- panel start -->
+
+        <!-- panel start -->
+        <div class="panel panel-primary filterable">
+
+            <!-- panel heading starat -->
+            <div class="panel-heading">
+                <h3 class="panel-title">Liste des rendez-vous</h3>
+                <div class="pull-right">
+                    <button class="btn btn-default btn-xs btn-filter"><span class="fa fa-filter"></span> Filters</button>
+                </div>
+            </div>
+            <!-- panel heading end -->
+
+            <div class="panel-body">
+                <!-- panel content start -->
+                <!-- Table -->
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr class="filters">
+                     {#   <th><input type="text" class="form-control" placeholder="scheduleId" disabled></th>#}
+                        <th><input type="text" class="form-control" placeholder="Date" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Jour" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Début" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Fin" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="places disponible" disabled></th>
+
+                    </tr>
+                    </thead>
+                   </tbody>
+                    {% for schedule in schedules %}
+                        <tr>
+                            <td>{{ schedule.ScheduleDate |date('d-m-Y') }}</td>
+                            <td> {{ schedule.ScheduleDay  }}</td>
+                            <td>{{ schedule.StartTime |date('H:i:s') }}</td>
+                            <td>  {{ schedule.EndTime |date('H:i:s') }}</td>
+                             <td> {{ schedule.BookAvail }}</td>
+                        </tr>
+                    {% endfor %}
+                   </table>
+                   <div class='panel panel-default'>
+
+                </div>
+                <!-- panel content end -->
+                <!-- panel end -->
+            </div>
+        </div>
+        <!-- panel start -->
+    </div>
+</div>
+<!-- /#wrapper -->
+
+{% endblock %}

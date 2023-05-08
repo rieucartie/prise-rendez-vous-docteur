@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="mb-3">
+           Vous etes loggué en tant que{{ app.user.username }}, 
+            <a class="btn btn-primary" href="{{ path('app_logout') }}">déconnexion</a>
+        </div>
+    {% else %}
+    {# Ici le contenu affiché aux utilisateurs non admin #} 
+    {% endif %}
+    
+    
+    
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Docteur{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock  %}
+{% block body %}
+<div class="container">
+    <h2>Creer nouveau docteur  </h2>
+    <div class="inline">
+        {{ include('admin/doctor/_form.html.twig') }}
+    </div>
+    <div class="inline">
+        <a class="alert alert-dark" href="{{ path('admin_doctor_index') }}">Retour à la liste</a>
+    </div>
+</div>
+{% endblock %}

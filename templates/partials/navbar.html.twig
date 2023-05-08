@@ -1,0 +1,93 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light ">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <a class="navbar-img" href="#">
+                        <img src="{{ asset('../img/young-businessman.jpg') }}" width="90" height="70" title="my image"
+                             alt="My image">
+                    </a>
+                    {% if is_granted('ROLE_PATIENT') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('profil') }}" tabindex="-1" aria-disabled="true">
+                                    Preparez votre rendez-vous</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('datedereservation') }}" tabindex="-1" aria-disabled="true">
+                                    Prenez un rendez-vous</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('patient_mes-rendez-vous') }}" tabindex="-1"
+                                   aria-disabled="true">Liste de mes rendez vous</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_logout') }}" tabindex="-1"
+                                   aria-disabled="true">Déconnexion</a>
+                            </li>
+
+                    {% elseif is_granted('ROLE_DOCTOR') %}
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('calendar') }}" tabindex="-1"
+                                   aria-disabled="true">Planning des rendez-vous </a>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('schedulecreate') }}" tabindex="-1"
+                                   aria-disabled="true">Creez une disponiblité</a>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('listPatient') }}" tabindex="-1"
+                                   aria-disabled="true">Liste des patients</a>
+
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_logout') }}" tabindex="-1"
+                                   aria-disabled="true">Déconnexion</a>
+
+                        {% elseif is_granted('ROLE_ADMINER') %}
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('admin_utilisateurs') }}" tabindex="-1"
+                                   aria-disabled="true">Liste des utilisateurs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('admin_doctor_index') }}" tabindex="-1"
+                                   aria-disabled="true">Liste des docteurs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_logout') }}" tabindex="-1"
+                                   aria-disabled="true">Déconnexion</a>
+                            </li>
+                </ul>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                {% elseif is_granted('IS_AUTHENTICATED_ANONYMOUSLY') %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_register') }}"> Enregistrez-vous
+                                </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_login') }}">Connexion </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </ul>
+        </div>
+        </div>
+    </nav>
+    <!-- navigation -->
+</nav>
+
+

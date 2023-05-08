@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello ScheduleController!{% endblock %}
+{% block body %}
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="page-header">
+                        Liste des patients
+                    </h2>
+                </div>
+            </div>
+            <!-- panel start -->
+            <div class="panel panel-primary filterable">
+                <div class="panel-body">
+                    <!-- panel content start -->
+                    <!-- Table -->
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        <tr class="filters">
+                            {#   <th><input type="text" class="form-control" placeholder="scheduleId" disabled></th>#}
+                            <th><input type="text" class="form-control" placeholder="Nom" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="Prenom" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="Email" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="Modifier" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="Supprimer" disabled></th>
+
+                        </tr>
+                        </thead>
+                        </tbody>
+                        {% for listPatient in listPatients %}
+                            <tr>
+                                <td>{{ listPatient.patientNom }}</td>
+                                <td> {{ listPatient.patientPrenom  }}</td>
+                                <td>{{ listPatient.patientEmail }}</td>
+
+                               <td>  <a class="btn btn-primary"  id="listPatientid"
+                                        href="{{ path('listPatientupdate', {'id': listPatient.id}) }}"
+                                   >Modifier</a></td>
+                                <td>  <a class="btn btn-danger"
+                                          href="{{ path('listPatientdelete', {'listPatientid': listPatient.id}) }}"
+                                         onclick="confirm('Etes vous sur de vouloir supprimer ce patient ?')"
+                                                 >Supprimer</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <!-- panel content end -->
+            </div>
+            <!-- panel start -->
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+    </script>
+{% endblock %}

@@ -1,0 +1,230 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} liste des patients !{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock  %}
+{% block body %}
+    <div class="container">
+        <!-- Button to Open the Modal -->
+        <section style="padding-bottom: 50px; padding-top: 50px;">
+            <div class="row">
+                <!-- start -->
+                <!-- USER PROFILE ROW STARTS-->
+                <div class="row">
+                    <div class="col-md-3 col-sm-3">
+
+                        <div class="user-wrapper">
+                            <img src="{{ asset('img/'~'young-businessman.jpg') }}" width="250px" class="img-responsive"/>
+                            <div class="description">
+                                <h5><strong> marcos de la juntane </strong></h5>
+                                <p>
+                                    Designer chef chez orioner
+                                </p>
+                                <hr/>
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#myModal">Mise à jour du profil
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-sm-9  user-wrapper">
+                        <div class="description">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <form class="form" role="form" method="POST" accept-charset="UTF-8">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">Information du patient </div>
+                                            <div class="panel-body">
+
+                                                {% for user in users %}
+
+                                                Nom : {{ user.PatientNom }}<br>
+                                                Statut Marital: {{ user.PatientMaritialStatus }}<br>
+                                                Adresse: {{ user.patientAdresse }}<br>
+                                                Telephone: {{ user.PatientPhone }}<br>
+                                                Date De Naissance : {{ user.patientDateDeNaissance|date('d-m-Y') }}<br>
+                                                Email: {{ user.PatientEmail }}
+                                                <br>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">Appointment Information</div>
+                                            <div class="panel-body">
+                                                {% for appointment in user.appointments %}
+                                                Jour:{{ appointment.schedule.ScheduleDay }}<br>
+                                                Date: {{ appointment.schedule.ScheduleDate|date('d-m-Y') }}<br>
+                                                Debut du rdv : {{ appointment.schedule.StartTime |date('H:i')~ ' H' }}
+                                                <br>
+
+                                                <br>
+
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        {% endfor %}
+                                    </form>
+                                    <form action="{{ path('makeAnAppointment') }}" class="form" role="form" method="POST" accept-charset="UTF-8">
+                                    {% for user in users %}
+                                       {% for appointment in user.appointments %}
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="control-label">Symptome:</label>
+                                            <input type="text" class="form-control" value="{{ appointment.Symptome }}" name="symptom" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="control-label">Commentaire:</label>
+                                            <input type="text" class="form-control" name="comment" value="{{ appointment.Comments }}" required></textarea>
+                                        </div>
+                                        <input type="hidden" name="userid"
+                                               value="{{ user.id }}">
+                                        <input type="hidden" name="schedule"
+                                               value="{{  appointment.schedule.id }}">
+
+                                        <div class="form-group">
+                                            <input type="submit" name="appointment" id="submit" class="btn btn-primary"
+                                                   value="Prendre un rendez-vous">
+                                        </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- USER PROFILE ROW END-->
+                <!-- end -->
+                <div class="col-md-4">
+
+                    <!-- Large modal -->
+                    {# update profil #}
+                    <!-- Modal -->
+                    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4  id="myModalLabel">Mise à jour du profil</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- form start -->
+                                    <form action="{{ path('majduprofil') }}" method="post">
+
+                                        <table class="table table-user-information">
+                                            <tbody>
+                                            {% for user in users %}
+
+                                                <tr>
+                                                    <td>Nom:</td>
+                                                    <td><input type="text" class="form-control" name="patientFirstName"
+                                                               value="{{ user.patientNom }}"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Prenom</td>
+                                                    <td><input type="text" class="form-control" name="patientLastName"
+                                                               value="{{ user.patientPrenom }}"/></td>
+                                                </tr>
+
+                                                <!-- radio button -->
+                                                <tr>
+                                                    <td> Statut Marital:</td>
+                                                    <td>
+                                                        <div class="radio">
+                                                            <label><input type="radio" name="patientMaritialStatus"
+                                                                  {%  if user.patientMaritialStatus  == "Celibataire" %} checked="checked" {%  endif %}
+                                                                   value="Celibataire">Celibataire</label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label><input type="radio" name="patientMaritialStatus"
+                                                                          {%  if user.patientMaritialStatus  == "Marié" %} checked="checked" {%  endif %}
+                                                                          value="Marié">Marié(e)</label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label><input type="radio" name="patientMaritialStatus"
+                                                                          {%  if user.patientMaritialStatus  == "Separé" %} checked="checked" {%  endif %}
+                                                                          value="Separé">Separé(e)</label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label><input type="radio" name="patientMaritialStatus"
+                                                                          {%  if user.patientMaritialStatus  == "Divorcé" %} checked="checked" {%  endif %}
+                                                                          value="Divorcé">Divorcé(e)</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <!-- radio button end -->
+                                                <tr>
+
+                                                    <td>
+                                                        <div class="form-group ">
+
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-calendar">
+                                                                    </i>
+                                                                </div>
+                                                                <input class="form-control" id="patientDateDeNaissance"
+                                                                       name="patientDateDeNaissance" placeholder="yyyy/mm/dd"
+                                                                       type="text"
+                                                                       value="{{ user.patientDateDeNaissance|date('Y-m-d') }}"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" name="id" value="{{ user.id }}"/>
+                                                        <input type="submit" name="submit" class="btn btn-info"
+                                                               value="Mise à jour Information"></td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+
+                                        </table>
+
+
+                                    </form>
+                                    <!-- form end -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <br/><br/>
+                </div>
+
+            </div>
+            <!-- ROW END -->
+        </section>
+        <!-- SECTION END -->
+    </div>
+    <!-- CONATINER END -->
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $('#myModal').on('shown.bs.modal', function () {
+    $('#myInput').trigger('focus')
+})
+</script>
+    <script>
+        $(document).ready(function(){
+            var date_input=$('input[name="patientDateDeNaissance"]'); //our date input has the name "date"
+            var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+            console.log(date_input)
+            date_input.datepicker({
+                format: 'yyyy/mm/dd',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+            })
+        })
+    </script>
+
+{% endblock %}

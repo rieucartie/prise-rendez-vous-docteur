@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block title %}Utilisateur{% endblock %}
+{% block body %}
+    {% if app.user and is_granted('ROLE_ADMIN') %}
+<div class="container" id="crudApp">
+    <br/>
+    <p class="h3Liste" align="center">Liste des utilisateurs</p>
+    <br/>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="panel-title">Utilisateur</h3>
+
+                </div>
+                <div class="col-md-6" align="right">
+
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Email</th>
+                        {# <th>Roles</th> #}
+                        <th>Roles</th>
+
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td> {# On boucle sur les rôles #}
+                                {% for role in user.roles %}
+                                    {% if role == "ROLE_USER" %}
+                                        Utilisateur
+                                    {% elseif role == "ROLE_DOCTOR" %}
+                                        Docteur
+                                    {% elseif role == "ROLE_ADMINER" %}
+                                        Administrateur
+                                    {% endif %}
+                                {% endfor %}
+                            <td>
+                                <a class="btn btn-primary" href="{{ path('users_edit', {'id': user.id}) }}">Modifier</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8">Aucun enregistrement</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="creer">
+            <a class="btn btn-primary" href="{{ path('users_new') }}">Creer</a>
+        </div>
+        {% else %}
+            vous n'avez pas le droit d'acceder à cette page
+        {% endif %}
+
+        {% endblock %}
+    </div>
+</div>

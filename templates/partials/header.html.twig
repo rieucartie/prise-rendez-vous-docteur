@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html> 
+    <head>
+        <meta charset="UTF-8">
+        <title>{{ title|raw }}</title>
+       {% block stylesheets %}{% endblock %}
+       <link rel="stylesheet" href="{{ asset('build/css/styles.css') }}">
+</head>
+    <body>

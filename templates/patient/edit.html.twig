@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un utilisateur{% endblock %}
+
+{% block body %}
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="panel panel-primary filterable">
+
+                <div class="panel-body">
+                    <h1 mt-1>Modifier l' utilisateur</h1>
+                    {{ form(userForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

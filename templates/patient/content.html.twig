@@ -1,0 +1,25 @@
+{% if dateAtraiter is defined  and  dateAtraiter is not empty%}
+<table  class='table table-hover'>
+<tr>
+    <th>ScheduleDate</th>
+    <th>ScheduleDay</th>
+    <th>StartTime</th>
+    <th>endTime</th>
+    <th>BookAvail</th>
+</tr>
+{% for schedule in dateAtraiter %}
+    <tr>
+        <td>{{ schedule.ScheduleDate |date('d-m-Y') }}</td>
+        <td> {{ schedule.ScheduleDay  }}</td>
+        <td>{{ schedule.StartTime |date('H:i')~ ' H' }}</td>
+        <td>  {{ schedule.EndTime   |date('H:i')~ ' H' }}</td>
+        <td>
+            <a class="btn btn-primary"
+               href="{{ path('booking', {'id': schedule.id}) }}">
+                {%  if schedule.BookAvail == "disponible" %} Reserver   {%  endif  %}
+            </a>
+        </td>
+    </tr>
+{% endfor %}
+</table>
+{% endif %}

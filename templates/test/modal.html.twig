@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TestController!{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="panel-body">
+           {#  APPEL MODALE #}
+            <button type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#myModal">Mise à jour du profil
+            </button>
+            {#  FIN APPEL MODALE #}
+                    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4  id="myModalLabel">Mise à jour du profil</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- form start -->
+                                    <form action="{{ path('majduprofil') }}" method="post">
+
+                                        <table class="table table-user-information">
+                                            <tbody>
+                                            {% for user in users %}
+
+                                                <tr>
+                                                    <td>Nom:</td>
+                                                    <td><input type="text" class="form-control" name="patientFirstName"
+                                                               value="{{ user.patientNom }}"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Prenom</td>
+                                                    <td><input type="text" class="form-control" name="patientLastName"
+                                                               value="{{ user.patientPrenom }}"/></td>
+                                                </tr>
+
+                                                <!-- radio button -->
+                                                <tr>
+                                                    <td> Statut Marital:</td>
+                                                    <td>
+                                                        <div class="radio">
+                                                            <label><input type="radio" name="patientMaritialStatus"
+                                                                        {%  if user.patientMaritialStatus  == "Celibataire" %} checked="checked" {%  endif %}
+                                                                          value="Celibataire">Celibataire</label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label><input type="radio" name="patientMaritialStatus"
+                                                                        {%  if user.patientMaritialStatus  == "Marié" %} checked="checked" {%  endif %}
+                                                                          value="Marié">Marié(e)</label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label><input type="radio" name="patientMaritialStatus"
+                                                                        {%  if user.patientMaritialStatus  == "Separé" %} checked="checked" {%  endif %}
+                                                                          value="Separé">Separé(e)</label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label><input type="radio" name="patientMaritialStatus"
+                                                                        {%  if user.patientMaritialStatus  == "Divorcé" %} checked="checked" {%  endif %}
+                                                                          value="Divorcé">Divorcé(e)</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <!-- radio button end -->
+                                                <tr>
+                                                    <!-- <td><input type="text" class="form-control" name="patientDOB" value="<?php echo $userRow['patientDOB']; ?>"  /></td> -->
+                                                    <td>
+                                                        <div class="form-group ">
+
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-calendar">
+                                                                    </i>
+                                                                </div>
+                                                                <input class="form-control" id="patientDateDeNaissance"
+                                                                       name="patientDateDeNaissance" placeholder="yyyy/mm/dd"
+                                                                       type="text"
+                                                                       value="{{ user.patientDateDeNaissance|date('Y-m-d') }}"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" name="id" value="{{ user.id }}"/>
+                                                        <input type="submit" name="submit" class="btn btn-info"
+                                                               value="Mise à jour Information"></td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+
+                                        </table>
+
+
+                                    </form>
+                                    <!-- form end -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <br/><br/>
+            </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+
+    <script >
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        })
+    </script>
+{% endblock %}
+
+
+
+
+
