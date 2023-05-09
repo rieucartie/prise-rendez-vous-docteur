@@ -26,7 +26,7 @@ yarn encore dev
      * config/services.yaml
      
           parameters:
-               mailer_from_address: 'your_email@example.com'
+               mailer_from_address: 'votre-email'
 
  # Vidéo explicative sur youtube : 
  
