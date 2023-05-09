@@ -17,15 +17,16 @@ yarn encore dev
     
 # Paramétrer votre email pour l'enregistrement du compte
 
- * Dans votre fichier .env :
+ * Dans votre fichier .env.local :
  
      MAILER_URL=smtp://your_smtp_server:587?encryption=tls&auth_mode=login&username=your_username&password=your_password
 
  * Dans votre fichier config/services.yaml, définissez l'adresse e-mail de l'expéditeur en tant que paramètre :
 
-     config/services.yaml
-     parameters:
-         mailer_from_address: 'your_email@example.com'
+     * config/services.yaml
+     
+          parameters:
+               mailer_from_address: 'your_email@example.com'
 
  # Vidéo explicative sur youtube : 
  
